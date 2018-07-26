@@ -33,3 +33,5 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
 }
 
 module.exports = WXBizDataCrypt
+
+//这种写法每次require后new 都是新的一个对象 

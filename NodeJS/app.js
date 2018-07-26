@@ -1,31 +1,30 @@
 var express = require('express');
-var mysql = require('mysql');
 var app = express();
+var url = require("url");
 var https=require("https");
-var util = require('util');
-var WXBizDataCrypt = require('./WXBizDataCrypt')
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
+var ConfMgr = require("./config")
+const userMgr_ = require("./utils/userMgr")
 
-var connection = mysql.createConnection({
-  host:"localhost",
-  user:"root",
-  password:"1312075",
-  port:"3306",
-  database:"wechat_user",
-});
-connection.connect();
+//https
+const fs = require('fs');
+const options = {
+  path:'/login',
+  method:'GET',
+  key: fs.readFileSync('./../uni67_certificate/Nginx/2_www.uni67.com.key'),
+  cert: fs.readFileSync('./../uni67_certificate/Nginx/1_www.uni67.com_bundle.crt')
+};
 
-//
-app.get("/login",function(req ,res){
+//login请求处理
+function login(req ,res ,ishttps){
   console.log(req.query);
   var query = req.query; 
-  
-  // var appid = query.appid;
+  // if(!query.hasOwnProperty("code") || !query.hasOwnProperty("encryptedData") || !query.hasOwnProperty("iv") ){
+  // if(!( 'code' in query ) || !( 'encryptedData' in query ) || !( 'iv' in query )){ 
+  //   console.log(">>> query. null")
+  //   res.send("{ status:0 , err:\"query. null\"}");
+  //   return 
+  // }
+
   var code  = decodeURI(query.code);  //用户登录凭证（有效期五分钟）  使用 code 换取 openid 和 session_key 等信息 https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
   var unionid = query.unionid;  //部分情况下才会返回这个
   var encryptedData = decodeURI(query.encryptedData);
@@ -33,82 +32,95 @@ app.get("/login",function(req ,res){
 
   if(code == null || code == ""){
     console.log(">>> code null");
-    res.send("{ status:0 , err:\"code null\"}");
+    sendend(res , ishttps ,"{ status:0 , err:\"code null\"}");
     return ;
   };
   if(encryptedData == null || encryptedData == ""){
     console.log(">>> encryptedData null");
-    res.send("{ status:0 , err:\"encryptedData null\"}");
+    sendend(res , ishttps ,"{ status:0 , err:\"encryptedData null\"}");
     return ;
   };
   if(iv == null || iv == ""){
     console.log(">>> iv null");
-    res.send("{ status:0 , err:\"iv null\"}");
+    sendend(res , ishttps ,"{ status:0 , err:\"iv null\"}");
     return ;
   };
 
   if(unionid != null && unionid != ""){
-
+    sendend(res , ishttps ,"{ status:1 , success:\"has unionid\"}");
   }else{
-    //获取 seesion_key
-    var APPID  = "wx908273daa83d469c"//微信开放平台的 appid 暂时放这里，后面统一成配置表
-    var SECRET = "9118bace7ae642f92d2994304c15a37f" ;//微信开放平台的 SECRET 暂时放这里，后面统一成配置表
-    var url = "https://api.weixin.qq.com/sns/jscode2session?appid=" +APPID +"&secret="+ SECRET+"&js_code="+ code + "&grant_type=authorization_code"
-    https.get(url,function(req,res){
-      var data = '';
-      req.on('data' , function(data_){
-          data += data_;
-      });
+    var um = new userMgr_();
+    um.requestWeChat(code,encryptedData,iv);
+    sendend(res , ishttps ,"{ status:1 , success:\"get unionid\"}");
+  }
+}
 
-      req.on('end',function(){
-          // console.log(data);
+function sendend(res,ishttps , msg){
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
 
-          var object_data =JSON.parse(data);
-          var session_key = object_data.session_key
-          var openid = object_data.openid
+  if(ishttps ==true){
+    res.end(msg);
+  }else{
+    res.send(msg);
+  }
+}
 
-          console.log(">> session_key " + session_key);
-          console.log(">> APPID " + APPID );
-          console.log(">> encryptedData " + encryptedData );
-          console.log(">> iv " + iv );
-
-          try{
-            var pc = new WXBizDataCrypt(APPID, session_key)
-            var data_dec = pc.decryptData(encryptedData , iv)
-            // console.log('解密后 data: ', data_dec)
-
-            var nickName  = data_dec.nickName
-            var gender = data_dec.gender
-            var language = data_dec.language
-            var city = data_dec.city
-            var province = data_dec.province
-            var country = data_dec.country
-            var avatarUrl = data_dec.avatarUrl
-            var unionId = data_dec.unionId
-
-            var  userAddSql = 'insert into user_table (id,uuid,openid,nickname,icon_url,sex,city,province,inviter_id) value (?,?,?,?,?,?,?,?,?)';
-            var  userAddSql_Params = [0,unionId ,openid,nickName,avatarUrl,gender,city,province,""];
-            connection.query(userAddSql , userAddSql_Params , function(err , result){
-              if(err){
-                console.log(">>>>>>> !!! add user to sql err");
-                console.log(err);
-                return ;
-              }
-
-              console.log('inserted ! :',result); 
-            })
-          }catch(err){
-            console.log(">>>>>>> !!! WXBizDataCrypt  decryptData err");
-            console.log(err);
-          }
-      });
-    });
-
+//
+app.get("/login",function(req ,res){
+  try{
+    login(req,res,false);
+  }catch(err){
+    console.log(">>> http get login err");
+    console.log(err);
+    sendend(res , false ,"{ status:0 , err:\"catch err\"}") ;
   }
 });
 
-app.listen(8080,function(){
-  console.log(">>>> app listen 8080 port");
+app.listen(ConfMgr.HTTP_PORT,function(){
+  console.log(">>>> app listen port : " + ConfMgr.HTTP_PORT);
+});
+
+https.createServer(options, function(req, res) {
+  try{
+    var ishttps = true;
+    var query = url.parse(req.url, true).query;
+    var code  = decodeURI(query.code);  //用户登录凭证（有效期五分钟）  使用 code 换取 openid 和 session_key 等信息 https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
+    var unionid = query.unionid;  //部分情况下才会返回这个
+    var encryptedData = decodeURI(query.encryptedData);
+    var iv = decodeURI(query.iv);
+
+    if(code == null || code == ""){
+      console.log(">>> code null");
+      sendend(res , ishttps ,"{ status:0 , err:\"code null\"}");
+      return ;
+    };
+    if(encryptedData == null || encryptedData == ""){
+      console.log(">>> encryptedData null");
+      sendend(res , ishttps ,"{ status:0 , err:\"encryptedData null\"}");
+      return ;
+    };
+    if(iv == null || iv == ""){
+      console.log(">>> iv null");
+      sendend(res , ishttps ,"{ status:0 , err:\"iv null\"}");
+      return ;
+    };
+
+    if(unionid != null && unionid != ""){
+      sendend(res , ishttps ,"{ status:1 , success:\"has unionid\"}");
+    }else{
+      var um = new userMgr_();
+      um.requestWeChat(code,encryptedData,iv);
+      sendend(res , ishttps ,"{ status:1 , success:\"get unionid\"}");
+    }
+  }catch(err){
+    console.log(">>> http get login err");
+    console.log(err);
+    sendend(res , true ,"{ status:0 , err:\"catch err\"}");
+  }
+
+}).listen(ConfMgr.HTTPS_PORT , function(){
+  console.log(">>>> https listen port : " + ConfMgr.HTTPS_PORT);
 });
 
 module.exports = app;
