@@ -34,7 +34,7 @@ loginMgr.prototype.login = function(callback){
                 }
 
                 // 发送 code 到后台换取 openId, sessionKey, unionId
-                var url = "http://192.168.1.45:8080/login";
+                var url = 'https://www.uni67.com:6789/login';//"http://192.168.1.45:8000/login";
                 var url_encode  = encodeURI(url)
                 console.log(">>>> url encode : " + url_encode);
                 wx.request({
