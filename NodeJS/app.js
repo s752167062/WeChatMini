@@ -4,7 +4,8 @@ var url = require("url");
 var https=require("https");
 var ConfMgr = require("./config")
 const userMgr_ = require("./utils/userMgr")
-
+var mime=require('mime');
+var path = require('path');
 //https
 const fs = require('fs');
 const options = {
@@ -122,5 +123,31 @@ https.createServer(options, function(req, res) {
 }).listen(ConfMgr.HTTPS_PORT , function(){
   console.log(">>>> https listen port : " + ConfMgr.HTTPS_PORT);
 });
+
+
+//cocos creator web
+app.get("/creator",function(req ,res){
+  console.log(">>>>> creator")
+ 
+  fs.readFile('./web-mobile/index.html','utf-8',function(err,data){
+    if(err){
+      console.log(">>> respone html err");
+      console.log(err);
+      res.send("{ err }");
+      return 
+    }
+    console.log(data)
+    res.writeHead(200,{"Content-Type":"text/html"});//这个会报错。还需要支持css 、js
+    res.write(data.toString());
+    res.end();
+  })
+});
+
+
+app.use(express.static('web-mobile'))
+
+// app.listen(8001,function(){
+//   console.log(">>>> app listen port : " + 8001);
+// });
 
 module.exports = app;
