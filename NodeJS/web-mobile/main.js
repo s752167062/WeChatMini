@@ -137,7 +137,7 @@
 
         // jsList
         var jsList = settings.jsList;
-        var bundledScript = settings.debug ? 'src/project.dev.0c64e.js' : 'src/project.js';
+        var bundledScript = settings.debug ? 'src/project.dev.js' : 'src/project.js';
         if (jsList) {
             jsList = jsList.map(function (x) { return 'src/' + x; });
             jsList.push(bundledScript);
@@ -163,19 +163,19 @@
             jsList: jsList,
             groupList: settings.groupList,
             collisionMatrix: settings.collisionMatrix,
-            renderMode: 1
+            renderMode: 0
         };
 
         cc.game.run(option, onStart);
     }
 
     if (window.jsb) {
-        require('src/settings.7b155.js');
+        require('src/settings.js');
         require('src/jsb_polyfill.js');
         boot();
     }
     else if (false) {
-        require(window._CCSettings.debug ? 'cocos2d-js.ed7bc.js' : 'cocos2d-js-min.js');
+        require(window._CCSettings.debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js');
         var prevPipe = cc.loader.md5Pipe || cc.loader.assetLoader;
         cc.loader.insertPipeAfter(prevPipe, wxDownloader);
         boot();
@@ -186,7 +186,7 @@
 
         var cocos2d = document.createElement('script');
         cocos2d.async = true;
-        cocos2d.src = window._CCSettings.debug ? 'cocos2d-js.ed7bc.js' : 'cocos2d-js-min.js';
+        cocos2d.src = window._CCSettings.debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js';
 
         var engineLoaded = function () {
             document.body.removeChild(cocos2d);

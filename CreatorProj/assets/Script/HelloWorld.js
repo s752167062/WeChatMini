@@ -19,4 +19,15 @@ cc.Class({
     update: function (dt) {
 
     },
+
+    btnShowTips:function(){
+        console.log(">>>> btnShowTips");
+        wx.miniProgram.postMessage({ data: {foo: 'btnShowTips'} });
+    },
+
+    btnShowToast:function(){
+        console.log(">>>> btnShowToast");
+        wx.miniProgram.postMessage({ data: {foo: 'btnShowToast'} });
+    },
+
 });
