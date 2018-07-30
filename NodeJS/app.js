@@ -83,6 +83,10 @@ app.get("/login",function(req ,res){
   }
 });
 
+app.get('*', function(req, res){
+    sendend(res ,"{ status:0 , err:\"404\"}") ;
+});
+
 //http login
 app.listen(ConfMgr.HTTP_PORT,function(){
   console.log(">>>> app listen port : " + ConfMgr.HTTP_PORT);
