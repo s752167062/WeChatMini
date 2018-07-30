@@ -19,3 +19,35 @@
 .usermotto {
   margin-top: 200px;
 }
+
+.scroll{
+  height:auto;
+  align-items: center;
+} 
+
+.sitem{
+  width:100%;
+  margin-left: 25%;
+}
+
+.userinfo-avatar-item {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname-item {
+  color: #aaa;
+  height: 128rpx;
+  margin-top: 16px;
+  position: absolute;
+}
+
+.userinfo-time-item {
+  color: #aaa;
+  height: 128rpx;
+  margin-top: 40px;
+  font-size:10px;
+  position: absolute;
+}

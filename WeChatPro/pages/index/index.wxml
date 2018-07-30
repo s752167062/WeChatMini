@@ -1,5 +1,7 @@
 <!--index.wxml-->
 <view class="container">
+   <!-- <web-view src="https://www.uni67.com:6789/index.html" bindmessage = "bindGetMsg"></web-view>  -->
+  <!-- <web-view src="https://www.jianshu.com" bindmessage = "bindGetMsg"></web-view> -->
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
@@ -10,4 +12,20 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
+  <view class="btns">
+    <button class="btn0" bindtap="add"> 添加按钮 </button>
+  </view>
+
+  <scroll-view class="scroll">  
+    <view class="classname"></view>  
+    <block wx:for="{{lists}}" wx:key="*this">  
+      <!-- <view class="item" data-index="{{index}}" >item {{index}}--{{item.text}}        </view>   -->
+      <view class="sitem">
+        <image bindtap="bindViewTap" class="userinfo-avatar-item" src="{{item.url}}" background-size="cover"></image>
+        <text class="userinfo-nickname-item">{{item.name}}</text>
+        <text class="userinfo-time-item">{{item.time}}</text>
+      </view>
+    </block>  
+  </scroll-view>
+
 </view>
