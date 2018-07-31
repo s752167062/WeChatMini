@@ -1,15 +1,37 @@
 var mysql = require('mysql');
 var ConfMgr = require("./../config");
-function sqlMgr(){
-	this.connection = mysql.createConnection({
+var mysql_config = {
 		host:ConfMgr.host,
 		user:ConfMgr.user,
 		password:ConfMgr.password,
 		port:ConfMgr.port,
 		database:ConfMgr.database,
-	});
-	this.connection.connect();
+	};
+
+function sqlMgr(){
+	handleDisconnection();
 };
+
+function handleDisconnection() {
+   var connection = mysql.createConnection(mysql_config);
+    connection.connect(function(err) {
+        if(err) {
+            setTimeout('handleDisconnection()', 2000);
+        }
+    });
+
+    connection.on('error', function(err) {
+        logger.error('db error', err);
+        if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+            logger.error('db error执行重连:'+err.message);
+            handleDisconnection();
+        } else {
+            throw err;
+        }
+    });
+
+    this.connection = connection;
+}
 
 sqlMgr.prototype.insert = function(userAddSql , userAddSql_Params , callback) {
 	// body...
