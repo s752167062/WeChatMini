@@ -1,0 +1,4 @@
+<import src="../../components/hotcard/HotCard.wxml"/> 
+<view>
+    <template is="card" data="{{textList, deg, colorArr, images}}"></template>    
+</view>

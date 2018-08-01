@@ -1,0 +1,54 @@
+/* components/clearInput/clearInput.wxss */
+
+.input_class {
+     width:100%rpx;
+     height:60rpx;
+     background-color: rgba(125, 0, 0,0.3);
+}
+.input_icon{
+     position: absolute;
+     width: 35rpx;
+     height: 35rpx;
+     margin-top: 10rpx;
+     margin-left: 10rpx;
+}
+
+.input_com{
+    position: absolute;
+    width:90%rpx;
+    height:60rpx;
+    margin-top: 0rpx;
+    margin-left: 5%rpx
+}
+.clearInput {
+     display: -webkit-flex;
+     margin: 16rpx;
+     padding: 8rpx 14rpx 8rpx 8rpx;
+     font-size: 24rpx;
+     border-radius: 16rpx;
+     border: 1rpx solid gray;
+     align-items: center;
+}
+
+.searchImg {
+     width: 35rpx;
+     height: 35rpx;
+     vertical-align: center;
+}
+
+.clearImgShow {
+     width: 35rpx;
+     height: 35rpx;
+     vertical-align: center;
+}
+
+.clearImgHide {
+     display: none;
+}
+
+.clear_view{
+     width: 100%rpx;
+     height: 60rpx;
+     position: absolute;
+     transform: translate3d(5%rpx, 10rpx, 0rpx);
+}

@@ -1,0 +1,16 @@
+<template name="card">
+  <view wx:for="{{ textList }}" wx:key="index" class='list-wrap'> 
+      <image src="{{ item.main_picture }}" mode="widthFix" class='listitem-back' catchtap='goDetail' data-id="{{ item.id }}"></image>
+      <view class='whiteboard'>
+        <view class='head'>
+          <image src="{{ item.icon }}" class='headPic'></image>
+          <view class='text_name'>
+            {{ item.name }}
+          </view>
+        </view>
+        <button open-type='share' class='shareBtn' data-img="{{ item.share_titleimg }}" data-title='{{ item.share_title }}' data-id="{{ item.id }}" >
+          <text class='iconfont icon-share'>分享</text>
+        </button> 
+    </view> 
+  </view>
+</template>

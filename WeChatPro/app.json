@@ -1,12 +1,39 @@
 {
-  "pages":[
-    "pages/index/index",
-    "pages/logs/logs"
+  "pages": [
+    "pages/zc_hot/hot",
+    "pages/zc_store/store",
+    "pages/zc_user/user",
+    "pages/logs/logs",
+    "pages/zc_detail/detail"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTitleText": "UNI",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#9B9B9B",
+    "selectedColor": "#4A90E2",
+    "list": [
+      {
+        "pagePath": "pages/zc_hot/hot",
+        "text": "HOT",
+        "iconPath": "./image/READ_ICON/READ.png",
+        "selectedIconPath": "./image/READ_ICON/READ_SEL.png"
+      },
+      {
+        "pagePath": "pages/zc_store/store",
+        "text": "HOME",
+        "iconPath": "./image/BREAND_ICON/BRAND.png",
+        "selectedIconPath": "./image/BREAND_ICON/BRAND_SEL.png"
+      },
+      {
+        "pagePath": "pages/zc_detail/detail",
+        "text": "ME",
+        "iconPath": "./image/SETTINGS_ICON/SETTINGS.png",
+        "selectedIconPath": "./image/SETTINGS_ICON/SETTINGS_SEL.png"
+      }
+    ]
   }
 }
