@@ -1,5 +1,7 @@
 // pages/zc_detail/detail.js
 import { handleCon } from '../../utils/formatContent.js';
+
+var WxParse = require('../../wxParse/wxParse.js');
 const app = getApp()
 
 Page({
@@ -49,6 +51,45 @@ Page({
         this.setData(con);
       }
     })
+
+    //wxparse
+    var that = this;
+    var url = "http://www.uni67.com:6788/Asdasda.html";
+    that.setData({
+      server_url: "http://www.uni67.com:6788/" //处理引用到先对位置的图片
+    })
+    wx.request({
+      url: url,
+      success: (res) => {
+        var article_2 = res.data
+        WxParse.wxParse('article', 'html', article_2, that, 5);
+      }
+    })
+
+    /**
+     * 多数据解析示例
+     */
+    var replyHtml0 = `<div style="margin-top:10px;height:50px;">
+		<p class="reply">
+			wxParse回复0:不错，喜欢[03][04]
+		</p>	
+	</div>`;
+    var replyHtml1 = `<div style="margin-top:10px;height:50px;">
+		<p class="reply">
+			wxParse回复1:不错，喜欢[03][04]
+		</p>	
+	</div>`;
+    var replyArr = [];
+    replyArr.push(replyHtml0);
+    replyArr.push(replyHtml1);
+    for (let i = 0; i < replyArr.length; i++) {
+      WxParse.wxParse('reply' + i, 'html', replyArr[i], that);
+      if (i === replyArr.length - 1) {
+        WxParse.wxParseTemArray("replyTemArray", 'reply', replyArr.length, that)
+      }
+    }
+
+
   },
 
   /**
