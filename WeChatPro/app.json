@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/test/test",
     "pages/zc_hot/hot",
     "pages/zc_store/store",
     "pages/zc_user/user",

@@ -1,0 +1,21 @@
+{
+	"product_id" : 1,
+	"product_detail" : "",
+	"product_title"  : "",
+	"product_images" : [ "" , "" , ""],
+	"product_server" : "",
+	"commentarys" : [ 
+						{ "user_id" : "" , "user_name" : "" , "user_icon":"" ,  "context":"" }, 
+						{ "user_id" : "" , "user_name" : "" , "user_icon":"" ,  "context":"" }, 
+						{ "user_id" : "" , "user_name" : "" , "user_icon":"" ,  "context":"" }
+					],
+	"buy_url" : "",
+
+	"author" : "",
+	"author_id"   : "",
+	"author_icon" : "",
+	"create_time" : "",
+	"likes": 0,
+	"hots" : 0,
+	"tags": [ "" , "" , "" ]
+}

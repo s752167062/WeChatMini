@@ -1,0 +1,39 @@
+<view class="swiper_root" style="background-color: rgba(125,125,0,1)" >
+  <image src="{{select_item}}" mode="center" class="slide_image" />
+  <view class="dots">
+    <block wx:for="{{imgUrls}}" wx:key="unique">
+       <view stype="background-color: rgba(125,125,125,1); width:100rpx; height:40rpx"></view>
+    </block>
+  </view>
+
+  <view class="view_likes" style="background-color: rgba(0,125,0,0.6)">
+    <image src="./image/likes.png" class="like_image" mode="center"/>
+    <image src="./image/likes.png" class="nolike_image" mode="center"/>
+    <image src="./image/likes.png" class="review_image" mode="center"/>
+    <image src="./image/likes.png" class="bug_image" mode="center"/>
+  </view>
+  
+  <view class="change_img" style="background-color: rgba(125,0,0,0.6)">
+    <image src="./image/likes.png" class="left_img" mode="center"  catchtap='leftimage'/>
+    <image src="./image/likes.png" class="right_img" mode="center" catchtap='rightimage'/>
+  </view>
+
+  <view class="user_info" style="background-color: rgba(0,0,125,0.6)">
+    <image src="./image/likes.png" class="like_user" mode="center"/>
+    <text class="text_name">AAASSSASSSAAas</text>
+    <image src="./image/likes.png" class="show_detail" mode="center"/>
+  </view>
+
+</view>
+<!-- <swiper indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <block wx:for="{{imgUrls}}">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image" width="355" height="150"/>
+    </swiper-item>
+  </block>
+</swiper>
+<button bindtap="changeIndicatorDots"> indicator-dots </button>
+<button bindtap="changeAutoplay"> autoplay </button>
+<slider bindchange="intervalChange" show-value min="500" max="2000"/> interval
+<slider bindchange="durationChange" show-value min="1000" max="10000"/> duration -->

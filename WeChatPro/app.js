@@ -49,6 +49,7 @@ App({
   globalData: {
     userInfo: null,
     winHeight: wx.getSystemInfoSync().screenHeight,
+    
   },
 
   loginMgr: new login()
